@@ -1,0 +1,12 @@
+.venv/
+build/
+install/
+log/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+
+
+
+

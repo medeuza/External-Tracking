@@ -1,142 +1,190 @@
+"""
+Multi-robot trajectory logger with ground truth.
+
+Subscribes to AprilTag and GT topics for each robot:
+    /apriltag_pose_<id>
+    /ground_truth_pose_<id>
+
+Writes one CSV per robot with both visual and GT columns:
+    visual_x, visual_y, visual_yaw
+    gt_x, gt_y, gt_yaw
+
+Files: ~/wspace/logs/multi_robot_<TS>_robot_<id>.csv
+
+The two streams are NOT time-synchronized — each row is written when
+either source publishes, with the most recent value of the other side
+filled in. This keeps the file dense and easy to plot.
+"""
+
 import csv
+import math
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict
 
 import rclpy
 from rclpy.node import Node
 
 from geometry_msgs.msg import PoseStamped
-from nav_msgs.msg import Odometry
 from tf_transformations import euler_from_quaternion
-from message_filters import Subscriber, ApproximateTimeSynchronizer
 
 
 def wrap_to_pi(a: float) -> float:
-    import math
     return (a + math.pi) % (2.0 * math.pi) - math.pi
 
 
-def yaw_from_quat(q) -> float:
+def yaw_from_pose(msg: PoseStamped) -> float:
+    q = msg.pose.orientation
     _, _, yaw = euler_from_quaternion([q.x, q.y, q.z, q.w])
     return wrap_to_pi(yaw)
-
-
-def yaw_from_pose_msg(msg: PoseStamped) -> float:
-    return yaw_from_quat(msg.pose.orientation)
 
 
 def stamp_to_sec(stamp) -> float:
     return float(stamp.sec) + float(stamp.nanosec) * 1e-9
 
 
-class SquareTrajectoryLogger(Node):
+class RobotLog:
+    """Per-robot CSV file and writer with both visual and GT columns."""
+
+    def __init__(self, node: Node, robot_id: int, csv_path: Path):
+        self.robot_id = robot_id
+        self.csv_path = csv_path
+        self.csv_file = open(csv_path, "w", newline="")
+        self.writer = csv.writer(self.csv_file)
+        self.writer.writerow([
+            "sample_idx",
+            "t",
+            "source",  # "visual" or "gt"
+            "visual_stamp", "visual_x", "visual_y", "visual_yaw",
+            "gt_stamp",     "gt_x",     "gt_y",     "gt_yaw",
+        ])
+        self.csv_file.flush()
+        self.sample_idx = 0
+
+        # Last values from each source (None = nothing yet)
+        self.last_visual: Optional[Dict[str, float]] = None
+        self.last_gt: Optional[Dict[str, float]] = None
+
+        self.start_time = node.get_clock().now()
+        node.get_logger().info(f"Robot {robot_id} -> {csv_path}")
+
+    def update_visual(self, msg: PoseStamped, t_sec: float):
+        self.last_visual = {
+            "stamp": stamp_to_sec(msg.header.stamp),
+            "x": float(msg.pose.position.x),
+            "y": float(msg.pose.position.y),
+            "yaw": yaw_from_pose(msg),
+        }
+        self._write_row(t_sec, "visual")
+
+    def update_gt(self, msg: PoseStamped, t_sec: float):
+        self.last_gt = {
+            "stamp": stamp_to_sec(msg.header.stamp),
+            "x": float(msg.pose.position.x),
+            "y": float(msg.pose.position.y),
+            "yaw": yaw_from_pose(msg),
+        }
+        self._write_row(t_sec, "gt")
+
+    def _write_row(self, t_sec: float, source: str):
+        v = self.last_visual or {"stamp": float("nan"), "x": float("nan"),
+                                 "y": float("nan"), "yaw": float("nan")}
+        g = self.last_gt or {"stamp": float("nan"), "x": float("nan"),
+                             "y": float("nan"), "yaw": float("nan")}
+        self.writer.writerow([
+            self.sample_idx,
+            f"{t_sec:.6f}",
+            source,
+            f"{v['stamp']:.9f}", f"{v['x']:.6f}", f"{v['y']:.6f}", f"{v['yaw']:.6f}",
+            f"{g['stamp']:.9f}", f"{g['x']:.6f}", f"{g['y']:.6f}", f"{g['yaw']:.6f}",
+        ])
+        self.csv_file.flush()
+        self.sample_idx += 1
+
+    def close(self):
+        if not self.csv_file.closed:
+            self.csv_file.close()
+
+
+class MultiTrajectoryLogger(Node):
     def __init__(self):
-        super().__init__("square_trajectory_logger")
+        super().__init__("multi_trajectory_logger")
 
-        self.declare_parameter("odom_topic", "/odom")
-        self.declare_parameter("aruco_topic", "/aruco_pose")
-        self.declare_parameter("ground_truth_topic", "/ground_truth_pose")
         self.declare_parameter("output_dir", str(Path.home() / "wspace" / "logs"))
-        self.declare_parameter("mode", "odom")  # odom or aruco
-        self.declare_parameter("sync_queue_size", 100)
-        self.declare_parameter("sync_slop", 0.05)
+        self.declare_parameter("visual_topic_prefix", "/apriltag_pose_")
+        self.declare_parameter("gt_topic_prefix", "/ground_truth_pose_")
+        self.declare_parameter("robot_ids", [0, 1, 2])
 
-        self.odom_topic = str(self.get_parameter("odom_topic").value)
-        self.aruco_topic = str(self.get_parameter("aruco_topic").value)
-        self.gt_topic = str(self.get_parameter("ground_truth_topic").value)
         self.output_dir = Path(self.get_parameter("output_dir").value)
-        self.mode = str(self.get_parameter("mode").value)
-
-        self.sync_queue_size = int(self.get_parameter("sync_queue_size").value)
-        self.sync_slop = float(self.get_parameter("sync_slop").value)
+        self.visual_topic_prefix = str(self.get_parameter("visual_topic_prefix").value)
+        self.gt_topic_prefix = str(self.get_parameter("gt_topic_prefix").value)
+        self.robot_ids = [int(v) for v in self.get_parameter("robot_ids").value]
 
         self.output_dir.mkdir(parents=True, exist_ok=True)
-
-        self.odom_sub = Subscriber(self, Odometry, self.odom_topic)
-        self.aruco_sub = Subscriber(self, PoseStamped, self.aruco_topic)
-        self.gt_sub = Subscriber(self, PoseStamped, self.gt_topic)
-
-        self.sync = ApproximateTimeSynchronizer(
-            [self.odom_sub, self.aruco_sub, self.gt_sub],
-            queue_size=self.sync_queue_size,
-            slop=self.sync_slop,
-            allow_headerless=False,
-        )
-        self.sync.registerCallback(self.synced_callback)
-
         self.start_time = self.get_clock().now()
+        ts = self.start_time.nanoseconds
 
-        filename = self.output_dir / f"square_{self.mode}_{self.start_time.nanoseconds}.csv"
-        self.csv_file = open(filename, "w", newline="")
-        self.csv_writer = csv.writer(self.csv_file)
+        self.logs: Dict[int, RobotLog] = {}
+        for rid in self.robot_ids:
+            path = self.output_dir / f"multi_robot_{ts}_robot_{rid}.csv"
+            self.logs[rid] = RobotLog(self, rid, path)
 
-        self.csv_writer.writerow([
-            "t",
-            "odom_stamp", "aruco_stamp", "gt_stamp",
-            "dt_odom_gt", "dt_aruco_gt",
+        for rid in self.robot_ids:
+            v_topic = f"{self.visual_topic_prefix}{rid}"
+            g_topic = f"{self.gt_topic_prefix}{rid}"
+            self.create_subscription(PoseStamped, v_topic,
+                                     self._make_visual_cb(rid), 10)
+            self.create_subscription(PoseStamped, g_topic,
+                                     self._make_gt_cb(rid), 10)
+            self.get_logger().info(f"Robot {rid}: visual={v_topic}, gt={g_topic}")
 
-            "odom_x", "odom_y", "odom_yaw",
-            "aruco_x", "aruco_y", "aruco_yaw",
-            "gt_x", "gt_y", "gt_yaw",
-        ])
-        self.csv_file.flush()
+        self.total_count = 0
 
-        self.get_logger().info(f"Logging to: {filename}")
-        self.get_logger().info(f"Mode: {self.mode}")
+    def _make_visual_cb(self, robot_id: int):
+        def cb(msg: PoseStamped):
+            now = self.get_clock().now()
+            t = (now - self.start_time).nanoseconds * 1e-9
+            try:
+                self.logs[robot_id].update_visual(msg, t)
+                self._maybe_log_status()
+            except Exception as e:
+                self.get_logger().error(f"Visual write failed for robot {robot_id}: {e}")
+        return cb
 
-    def synced_callback(self, odom_msg: Odometry, aruco_msg: PoseStamped, gt_msg: PoseStamped):
-        now = self.get_clock().now()
-        t = (now - self.start_time).nanoseconds / 1e9
+    def _make_gt_cb(self, robot_id: int):
+        def cb(msg: PoseStamped):
+            now = self.get_clock().now()
+            t = (now - self.start_time).nanoseconds * 1e-9
+            try:
+                self.logs[robot_id].update_gt(msg, t)
+                self._maybe_log_status()
+            except Exception as e:
+                self.get_logger().error(f"GT write failed for robot {robot_id}: {e}")
+        return cb
 
-        odom_stamp = stamp_to_sec(odom_msg.header.stamp)
-        aruco_stamp = stamp_to_sec(aruco_msg.header.stamp)
-        gt_stamp = stamp_to_sec(gt_msg.header.stamp)
-
-        dt_odom_gt = abs(odom_stamp - gt_stamp)
-        dt_aruco_gt = abs(aruco_stamp - gt_stamp)
-
-        odom_pose = odom_msg.pose.pose
-        odom_x = float(odom_pose.position.x)
-        odom_y = float(odom_pose.position.y)
-        odom_yaw = yaw_from_quat(odom_pose.orientation)
-
-        aruco_x = float(aruco_msg.pose.position.x)
-        aruco_y = float(aruco_msg.pose.position.y)
-        aruco_yaw = yaw_from_pose_msg(aruco_msg)
-
-        gt_x = float(gt_msg.pose.position.x)
-        gt_y = float(gt_msg.pose.position.y)
-        gt_yaw = yaw_from_pose_msg(gt_msg)
-
-        self.csv_writer.writerow([
-            f"{t:.6f}",
-            f"{odom_stamp:.9f}", f"{aruco_stamp:.9f}", f"{gt_stamp:.9f}",
-            f"{dt_odom_gt:.6f}", f"{dt_aruco_gt:.6f}",
-            f"{odom_x:.6f}", f"{odom_y:.6f}", f"{odom_yaw:.6f}",
-            f"{aruco_x:.6f}", f"{aruco_y:.6f}", f"{aruco_yaw:.6f}",
-            f"{gt_x:.6f}", f"{gt_y:.6f}", f"{gt_yaw:.6f}",
-        ])
-        self.csv_file.flush()
+    def _maybe_log_status(self):
+        self.total_count += 1
+        if self.total_count % 200 == 1:
+            counts = ", ".join(
+                f"R{rid}={self.logs[rid].sample_idx}" for rid in self.robot_ids
+            )
+            self.get_logger().info(f"Samples: {counts}")
 
     def destroy_node(self):
-        if hasattr(self, "csv_file") and not self.csv_file.closed:
-            self.csv_file.close()
+        for rl in self.logs.values():
+            rl.close()
         super().destroy_node()
 
 
 def main(args=None):
     rclpy.init(args=args)
-    node = SquareTrajectoryLogger()
-
+    node = MultiTrajectoryLogger()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
     finally:
-        if hasattr(node, "csv_file") and not node.csv_file.closed:
-            node.csv_file.close()
+        node.destroy_node()
         if rclpy.ok():
-            node.destroy_node()
             rclpy.shutdown()
 
 

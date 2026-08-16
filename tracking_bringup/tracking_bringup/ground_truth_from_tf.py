@@ -1,7 +1,3 @@
-"""
-Ground truth pose publisher from Gazebo dynamic_pose/info topic.
-"""
-
 import rclpy
 from rclpy.node import Node
 

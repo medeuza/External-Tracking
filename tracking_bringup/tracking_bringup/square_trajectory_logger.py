@@ -1,21 +1,3 @@
-"""
-Multi-robot trajectory logger with ground truth.
-
-Subscribes to AprilTag and GT topics for each robot:
-    /apriltag_pose_<id>
-    /ground_truth_pose_<id>
-
-Writes one CSV per robot with both visual and GT columns:
-    visual_x, visual_y, visual_yaw
-    gt_x, gt_y, gt_yaw
-
-Files: ~/wspace/logs/multi_robot_<TS>_robot_<id>.csv
-
-The two streams are NOT time-synchronized — each row is written when
-either source publishes, with the most recent value of the other side
-filled in. This keeps the file dense and easy to plot.
-"""
-
 import csv
 import math
 from pathlib import Path
@@ -43,7 +25,6 @@ def stamp_to_sec(stamp) -> float:
 
 
 class RobotLog:
-    """Per-robot CSV file and writer with both visual and GT columns."""
 
     def __init__(self, node: Node, robot_id: int, csv_path: Path):
         self.robot_id = robot_id
@@ -53,14 +34,13 @@ class RobotLog:
         self.writer.writerow([
             "sample_idx",
             "t",
-            "source",  # "visual" or "gt"
+            "source",
             "visual_stamp", "visual_x", "visual_y", "visual_yaw",
             "gt_stamp",     "gt_x",     "gt_y",     "gt_yaw",
         ])
         self.csv_file.flush()
         self.sample_idx = 0
 
-        # Last values from each source (None = nothing yet)
         self.last_visual: Optional[Dict[str, float]] = None
         self.last_gt: Optional[Dict[str, float]] = None
 

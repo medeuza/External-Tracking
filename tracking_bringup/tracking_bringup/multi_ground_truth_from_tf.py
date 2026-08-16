@@ -1,8 +1,3 @@
-"""
-Multi-robot ground truth publisher from Gazebo dynamic_pose/info.
-Publishes /ground_truth_pose_0, _1, _2 from transform indices 0, 1, 2.
-"""
-
 from typing import Dict, Optional, List
 
 import rclpy

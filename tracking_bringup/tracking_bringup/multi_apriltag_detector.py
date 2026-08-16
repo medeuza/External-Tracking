@@ -96,7 +96,7 @@ class MultiAprilTagDetector(Node):
         self.declare_parameter("max_position_jump", 0.80)
         self.declare_parameter("max_yaw_jump", 0.75)
 
-        # Path to the calibration JSON. Set to empty string to disable.
+
         self.declare_parameter(
             "calibration_file",
             str(Path.home() / "apriltag_correction.json"),
@@ -228,7 +228,6 @@ class MultiAprilTagDetector(Node):
         return x_f, y_f, yaw_f
 
     def apply_calibration(self, x: float, y: float):
-        """Subtract predicted error using the loaded model."""
         if not self.calib_enabled:
             return x, y
         feats = self.calib_basis(x, y)
@@ -256,13 +255,12 @@ class MultiAprilTagDetector(Node):
         raw_yaw = math.atan2(rotation_matrix[1, 0], rotation_matrix[0, 0])
         yaw = wrap_to_pi(-raw_yaw + self.yaw_offset + math.pi)
 
-        # Shift from marker center back to base center.
+
         x = x_marker - self.tag_offset_forward * math.cos(yaw) \
                      - self.tag_offset_lateral * math.cos(yaw + math.pi / 2.0)
         y = y_marker - self.tag_offset_forward * math.sin(yaw) \
                      - self.tag_offset_lateral * math.sin(yaw + math.pi / 2.0)
 
-        # Apply learned post-calibration (subtract predicted systematic error).
         x, y = self.apply_calibration(x, y)
 
         if self.is_outlier(st, x, y, yaw):

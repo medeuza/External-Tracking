@@ -1,549 +1,324 @@
-<sdf version='1.4'>
-    <!-- Draw Circle -->
-    <model name='ros_symbol'>
-      <static>1</static>
-      <link name='symbol'>
-        <collision name='one_one'>
-          <pose>-1.1 -1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <model name="warehouse_world">
 
-        <visual name='one_one'>
-          <pose>-1.1 -1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/White</name>
-            </script>
-          </material>
-        </visual>
+    <static>true</static>
+    <pose>0 0 0 0 0 1.57079632679</pose>
 
-        <collision name='one_two'>
-          <pose>-1.1 0 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
+    <link name="warehouse_link">
 
-        <visual name='one_two'>
-          <pose>-1.1 0 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/White</name>
-            </script>
-          </material>
-        </visual>
-
-        <collision name='one_three'>
-          <pose>-1.1 1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='one_three'>
-          <pose>-1.1 1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/White</name>
-            </script>
-          </material>
-        </visual>
-
-        <collision name='two_one'>
-          <pose>0 -1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='two_one'>
-          <pose>0 -1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/White</name>
-            </script>
-          </material>
-        </visual>
-
-        <collision name='two_two'>
-          <pose>0 0 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='two_two'>
-          <pose>0 0 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/White</name>
-            </script>
-          </material>
-        </visual>
-
-        <collision name='two_three'>
-          <pose>0 1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='two_three'>
-          <pose>0 1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/White</name>
-            </script>
-          </material>
-        </visual>
-
-        <collision name='three_one'>
-          <pose>1.1 -1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='three_one'>
-          <pose>1.1 -1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/White</name>
-            </script>
-          </material>
-        </visual>
-
-        <collision name='three_two'>
-          <pose>1.1 0 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='three_two'>
-          <pose>1.1 0 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/White</name>
-            </script>
-          </material>
-        </visual>
-
-        <collision name='three_three'>
-          <pose>1.1 1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='three_three'>
-          <pose>1.1 1.1 0.25 0 0 0</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.15</radius>
-              <length>0.5</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/White</name>
-            </script>
-          </material>
-        </visual>
-
-        <!-- Draw Hexagon -->
-        <collision name='head'>
-          <pose>3.5 0 -0.5 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>
-              <scale>0.8 0.8 0.8</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='head'>
-          <pose>3.5 0 -0.5 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>
-              <scale>0.8 0.8 0.8</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Green</name>
-            </script>
-          </material>
-        </visual>
-
-        <collision name='left_hand'>
-          <pose>1.8 2.7 0 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>
-              <scale>0.55 0.55 0.55</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='left_hand'>
-          <pose>1.8 2.7 0 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>
-              <scale>0.55 0.55 0.55</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Green</name>
-            </script>
-          </material>
-        </visual>
-
-        <collision name='right_hand'>
-          <pose>1.8 -2.7 0 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>
-              <scale>0.55 0.55 0.55</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='right_hand'>
-          <pose>1.8 -2.7 0 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>
-              <scale>0.55 0.55 0.55</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Green</name>
-            </script>
-          </material>
-        </visual>
-
-        <collision name='left_foot'>
-          <pose>-1.8 2.7 0 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>
-              <scale>0.55 0.55 0.55</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='left_foot'>
-          <pose>-1.8 2.7 0 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>
-              <scale>0.55 0.55 0.55</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Green</name>
-            </script>
-          </material>
-        </visual>
-
-        <collision name='right_foot'>
-          <pose>-1.8 -2.7 0 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>
-              <scale>0.55 0.55 0.55</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-
-        <visual name='right_foot'>
-          <pose>-1.8 -2.7 0 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>
-              <scale>0.55 0.55 0.55</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Green</name>
-            </script>
-          </material>
-        </visual>
-
-        <!-- Draw Wall -->
-        <collision name='body'>
-        <pose>0 0 -0.3 0 0 -1.5708</pose>
+      <!-- FLOOR -->
+      <collision name="floor_col">
+        <pose>0 0 -0.025 0 0 0</pose>
         <geometry>
-          <mesh>
-            <uri>model://turtlebot3_world/meshes/wall.dae</uri>
-            <scale>0.25 0.25 0.25</scale>
-          </mesh>
+          <box>
+            <size>20 11.25 0.05</size>
+          </box>
         </geometry>
-        <max_contacts>10</max_contacts>
-        <surface>
-          <bounce/>
-          <friction>
-            <ode/>
-          </friction>
-          <contact>
-            <ode/>
-          </contact>
-        </surface>
       </collision>
 
-      <visual name='body'>
-        <pose>0 0 -0.3 0 0 -1.5708</pose>
+      <visual name="floor_vis">
+        <pose>0 0 -0.025 0 0 0</pose>
         <geometry>
-          <mesh>
-            <uri>model://turtlebot3_world/meshes/wall.dae</uri>
-            <scale>0.25 0.25 0.25</scale>
-          </mesh>
+          <box>
+            <size>20 11.25 0.05</size>
+          </box>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/FlatBlack</name>
-          </script>
+          <ambient>0.80 0.80 0.80 1</ambient>
+          <diffuse>0.85 0.85 0.85 1</diffuse>
+          <specular>0.10 0.10 0.10 1</specular>
         </material>
       </visual>
+
+      <!-- NORTH WALL -->
+      <collision name="wall_north">
+        <pose>0 5.625 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>20 0.2 1</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="wall_north_vis">
+        <pose>0 5.625 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>20 0.2 1</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.86 0.86 0.86 1</ambient>
+          <diffuse>0.92 0.92 0.92 1</diffuse>
+          <specular>0.05 0.05 0.05 1</specular>
+        </material>
+      </visual>
+
+      <!-- SOUTH WALL -->
+      <collision name="wall_south">
+        <pose>0 -5.625 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>20 0.2 1</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="wall_south_vis">
+        <pose>0 -5.625 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>20 0.2 1</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.86 0.86 0.86 1</ambient>
+          <diffuse>0.92 0.92 0.92 1</diffuse>
+          <specular>0.05 0.05 0.05 1</specular>
+        </material>
+      </visual>
+
+      <!-- WEST WALL -->
+      <collision name="wall_west">
+        <pose>-10 0 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.2 11.25 1</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="wall_west_vis">
+        <pose>-10 0 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.2 11.25 1</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.86 0.86 0.86 1</ambient>
+          <diffuse>0.92 0.92 0.92 1</diffuse>
+          <specular>0.05 0.05 0.05 1</specular>
+        </material>
+      </visual>
+
+      <!-- EAST WALL -->
+      <collision name="wall_east">
+        <pose>10 0 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.2 11.25 1</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="wall_east_vis">
+        <pose>10 0 0.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.2 11.25 1</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.86 0.86 0.86 1</ambient>
+          <diffuse>0.92 0.92 0.92 1</diffuse>
+          <specular>0.05 0.05 0.05 1</specular>
+        </material>
+      </visual>
+
+      <!-- SHELF 1: углы (1,-4)-(8,-3) -->
+      <collision name="shelf1">
+        <pose>4.5 -2.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>7 1 1.5</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="shelf1_vis">
+        <pose>4.5 -2.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>7 1 1.5</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.55 0.40 0.25 1</ambient>
+          <diffuse>0.65 0.48 0.30 1</diffuse>
+          <specular>0.10 0.10 0.10 1</specular>
+        </material>
+      </visual>
+
+      <!-- SHELF 2: углы (5,-1)-(8,0) -->
+      <collision name="shelf2">
+        <pose>6.5 0.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3 1 1.5</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="shelf2_vis">
+        <pose>6.5 0.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3 1 1.5</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.55 0.40 0.25 1</ambient>
+          <diffuse>0.65 0.48 0.30 1</diffuse>
+          <specular>0.10 0.10 0.10 1</specular>
+        </material>
+      </visual>
+
+      <!-- SHELF 3: углы (1,-1)-(4,0) -->
+      <collision name="shelf3">
+        <pose>2.5 0.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3 1 1.5</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="shelf3_vis">
+        <pose>2.5 0.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3 1 1.5</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.55 0.40 0.25 1</ambient>
+          <diffuse>0.65 0.48 0.30 1</diffuse>
+          <specular>0.10 0.10 0.10 1</specular>
+        </material>
+      </visual>
+
+      <!-- SHELF 4: углы (1,2)-(8,3) -->
+      <collision name="shelf4">
+        <pose>4.5 3.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>7 1 1.5</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="shelf4_vis">
+        <pose>4.5 3.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>7 1 1.5</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.55 0.40 0.25 1</ambient>
+          <diffuse>0.65 0.48 0.30 1</diffuse>
+          <specular>0.10 0.10 0.10 1</specular>
+        </material>
+      </visual>
+
+      <!-- SHELF 5 (зеркальная к 1): углы (-8,-4)-(-1,-3) -->
+      <collision name="shelf5">
+        <pose>-4.5 -2.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>7 1 1.5</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="shelf5_vis">
+        <pose>-4.5 -2.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>7 1 1.5</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.55 0.40 0.25 1</ambient>
+          <diffuse>0.65 0.48 0.30 1</diffuse>
+          <specular>0.10 0.10 0.10 1</specular>
+        </material>
+      </visual>
+
+      <!-- SHELF 6 (зеркальная к 2): углы (-8,-1)-(-5,0) -->
+      <collision name="shelf6">
+        <pose>-6.5 0.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3 1 1.5</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="shelf6_vis">
+        <pose>-6.5 0.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3 1 1.5</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.55 0.40 0.25 1</ambient>
+          <diffuse>0.65 0.48 0.30 1</diffuse>
+          <specular>0.10 0.10 0.10 1</specular>
+        </material>
+      </visual>
+
+      <!-- SHELF 7 (зеркальная к 3): углы (-4,-1)-(-1,0) -->
+      <collision name="shelf7">
+        <pose>-2.5 0.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3 1 1.5</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="shelf7_vis">
+        <pose>-2.5 0.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3 1 1.5</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.55 0.40 0.25 1</ambient>
+          <diffuse>0.65 0.48 0.30 1</diffuse>
+          <specular>0.10 0.10 0.10 1</specular>
+        </material>
+      </visual>
+
+      <!-- SHELF 8 (зеркальная к 4): углы (-8,2)-(-1,3) -->
+      <collision name="shelf8">
+        <pose>-4.5 3.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>7 1 1.5</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="shelf8_vis">
+        <pose>-4.5 3.5 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>7 1 1.5</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.55 0.40 0.25 1</ambient>
+          <diffuse>0.65 0.48 0.30 1</diffuse>
+          <specular>0.10 0.10 0.10 1</specular>
+        </material>
+      </visual>
+
     </link>
   </model>
 </sdf>

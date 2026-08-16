@@ -26,8 +26,7 @@ class WaypointController(Node):
         self.declare_parameter("cmd_vel_topic", "/model/turtlebot3_burger_apriltag_000/cmd_vel")
         self.declare_parameter("waypoints", [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0])
 
-        # Number of times to repeat the full waypoint sequence.
-        # 1 = one pass, 3 = three full laps.
+
         self.declare_parameter("num_loops", 1)
 
         self.declare_parameter("linear_speed", 0.15)
@@ -120,11 +119,8 @@ class WaypointController(Node):
                 self.get_logger().warn("No fresh pose, stopping")
             return
 
-        # Did we reach the last waypoint of the current loop?
         if self.current_wp_idx >= len(self.waypoints):
             if self.current_loop < self.num_loops:
-                # Start the next loop: skip waypoint 0 (assumed = start),
-                # head directly to waypoint 1.
                 self.current_loop += 1
                 self.current_wp_idx = 1
                 self.phase = "TURN"

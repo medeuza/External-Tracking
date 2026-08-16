@@ -92,7 +92,6 @@ def generate_stag_marker(
 
     cv2.circle(image, outer_center, outer_radius, 255, thickness=-1)
 
-    # Black code circles
     for j in range(no_of_bits):
         if code[j] == "1":
             cx = inner_circle_top_left + inner_circle_diameter_size * code_locs[j][0]
@@ -100,7 +99,6 @@ def generate_stag_marker(
             radius = int(round(code_circle_diameter_size / 2))
             cv2.circle(image, (int(round(cx)), int(round(cy))), radius, 0, thickness=-1)
 
-    # Filler circles between nearby black circles
     for j in range(no_of_bits):
         for k in range(j + 1, no_of_bits):
             if code[j] == "1" and code[k] == "1":
@@ -118,7 +116,6 @@ def generate_stag_marker(
                     radius = int(round(filler_circle_diameter_size / 2))
                     cv2.circle(image, (int(round(cx)), int(round(cy))), radius, 0, thickness=-1)
 
-    # White code circles
     for j in range(no_of_bits):
         if code[j] == "0":
             cx = inner_circle_top_left + inner_circle_diameter_size * code_locs[j][0]
@@ -126,13 +123,11 @@ def generate_stag_marker(
             radius = int(round(code_circle_diameter_size / 2))
             cv2.circle(image, (int(round(cx)), int(round(cy))), radius, 255, thickness=-1)
 
-    # Keep clean white ring between outer and inner circle
     ring_mask = np.zeros_like(image)
     cv2.circle(ring_mask, outer_center, outer_radius, 255, thickness=-1)
     cv2.circle(ring_mask, outer_center, inner_radius, 0, thickness=-1)
     image[ring_mask == 255] = 255
 
-    # Add marker id and HD label, as in reference generator
     id_text = str(marker_id).zfill(len(str(total_markers)))
     display_id = id_text
 

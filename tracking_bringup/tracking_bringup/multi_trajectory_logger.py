@@ -1,7 +1,3 @@
-"""
-Multi-robot trajectory logger with ground truth.
-"""
-
 import csv
 import math
 from pathlib import Path

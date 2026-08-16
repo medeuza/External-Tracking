@@ -80,8 +80,6 @@ class SquarePosePIDController(Node):
         self.declare_parameter("max_heading_correction_deg", 18.0)
         self.declare_parameter("segment_progress_guard", 0.03)
 
-        # AprilTag center position in robot base_link frame.
-        # From your SDF: <pose>-0.032 0 0.235 ...</pose>
         self.declare_parameter("tag_offset_x", -0.032)
         self.declare_parameter("tag_offset_y", 0.0)
 
@@ -198,9 +196,6 @@ class SquarePosePIDController(Node):
         tag_y = float(msg.pose.position.y)
         yaw = yaw_from_quat(msg.pose.orientation)
 
-        # Convert detected AprilTag center pose to robot base_link pose.
-        # tag_world = base_world + R(yaw) * tag_offset_base
-        # base_world = tag_world - R(yaw) * tag_offset_base
         c = math.cos(yaw)
         s = math.sin(yaw)
 
@@ -298,9 +293,6 @@ class SquarePosePIDController(Node):
             progress, cte = self.segment_errors()
             remaining = max(0.0, self.side_length - progress)
 
-            # Logic fix:
-            # Do NOT finish at side_length - tolerance.
-            # Finish only when measured progress reaches the full side_length.
             if progress >= self.side_length:
                 self.drive_settle_count += 1
             else:
@@ -378,7 +370,6 @@ class SquarePosePIDController(Node):
                 self.stop_robot()
                 self.side_idx += 1
 
-                # Use ideal target yaw for next segment.
                 self.segment_yaw_ref = self.turn_target_yaw
 
                 self.get_logger().info(
@@ -392,10 +383,7 @@ class SquarePosePIDController(Node):
 
             w = self.turn_pid.update(yaw_err, dt)
 
-            # Logic fix:
-            # min_turn_speed is used only far from the target.
-            # Near the target PID must be allowed to command small velocity,
-            # otherwise robot oscillates and never settles.
+
             slow_zone = math.radians(8.0)
             if abs(yaw_err) > slow_zone:
                 if abs(w) < self.min_turn_speed:

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version="1.8">
   <model name="turtlebot3_burger_aruco_000">
-    <pose>-4.5 0 0.01 0 0 0</pose>
+    <pose>4.0   9.0  0.01 0 0 0</pose>
 
     <link name="base_footprint"/>
 
@@ -397,12 +397,12 @@
       <wheel_separation>0.160</wheel_separation>
       <wheel_radius>0.033</wheel_radius>
       <max_linear_acceleration>1.0</max_linear_acceleration>
-      <topic>cmd_vel</topic>
-      <odom_topic>odom</odom_topic>
-      <frame_id>odom</frame_id>
-      <child_frame_id>base_footprint</child_frame_id>
+      <topic>/model/turtlebot3_burger_aruco_000/cmd_vel</topic>
+      <odom_topic>/model/turtlebot3_burger_aruco_000/odom</odom_topic>
+      <frame_id>turtlebot3_burger_aruco_000/odom</frame_id>
+      <child_frame_id>turtlebot3_burger_aruco_000/base_footprint</child_frame_id>
       <odom_publisher_frequency>30</odom_publisher_frequency>
-      <tf_topic>/tf</tf_topic>
+      <tf_topic>/model/turtlebot3_burger_aruco_000/tf</tf_topic>
     </plugin>
 
     <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">

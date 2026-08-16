@@ -1,25 +1,3 @@
-"""
-Lawn-mower trajectory controller.
-
-Drives a single robot through a configurable sequence of waypoints in
-the world frame, using visual pose feedback (e.g. /apriltag_pose_<id>)
-and publishing velocity commands to a configurable /cmd_vel topic.
-
-The lawn-mower pattern is computed from four parameters:
-    num_lanes      Number of straight passes (e.g. 3 for a snake with 3 sweeps)
-    lane_length    Length of each pass, meters
-    lane_spacing   Sideways distance between consecutive passes, meters
-    primary_axis   "x" (passes along x, step along y)  or
-                   "y" (passes along y, step along x)
-
-For each waypoint the controller alternates DRIVE (go to waypoint) and
-TURN (rotate to face the next waypoint). Both phases use simple
-proportional control with deadbands.
-
-Each robot is one instance of this node, configured with its own
-pose_topic, cmd_vel_topic, and start_xy.
-"""
-
 import math
 from typing import Optional, List, Tuple
 
@@ -44,23 +22,18 @@ class LawnMowerController(Node):
     def __init__(self):
         super().__init__("lawn_mower_controller")
 
-        # Topics — set per robot.
         self.declare_parameter("pose_topic", "/apriltag_pose_0")
         self.declare_parameter("cmd_vel_topic", "/model/turtlebot3_burger_apriltag_000/cmd_vel")
 
-        # Robot start pose in world frame. Used as the (0,0) anchor of
-        # the lawn-mower pattern, the actual robot position is read from
-        # pose_topic.
+
         self.declare_parameter("start_x", -4.0)
         self.declare_parameter("start_y", 0.0)
 
-        # Lawn-mower pattern parameters.
         self.declare_parameter("num_lanes", 3)
         self.declare_parameter("lane_length", 5.0)
         self.declare_parameter("lane_spacing", 1.0)
-        self.declare_parameter("primary_axis", "x")  # "x" or "y"
+        self.declare_parameter("primary_axis", "x")
 
-        # Control gains and limits.
         self.declare_parameter("linear_speed", 0.12)
         self.declare_parameter("max_angular_speed", 0.2)
         self.declare_parameter("k_yaw", 1.5)
@@ -99,7 +72,7 @@ class LawnMowerController(Node):
 
         self.waypoints: List[Tuple[float, float]] = self._build_lawnmower()
         self.current_wp_idx = 0
-        self.phase = "TURN"  # alternates "TURN" -> "DRIVE"
+        self.phase = "TURN"
 
         self.cur_x: Optional[float] = None
         self.cur_y: Optional[float] = None
@@ -126,10 +99,9 @@ class LawnMowerController(Node):
             self.get_logger().info(f"  [{i}] ({wx:.2f}, {wy:.2f})")
 
     def _build_lawnmower(self) -> List[Tuple[float, float]]:
-        """Generate the sequence of waypoint corners for the lawn-mower."""
         pts: List[Tuple[float, float]] = []
         for i in range(self.num_lanes):
-            # End A and End B of the i-th lane, alternating direction.
+
             if i % 2 == 0:
                 a_along = 0.0
                 b_along = self.lane_length
@@ -149,7 +121,7 @@ class LawnMowerController(Node):
             if i == 0:
                 pts.append(pa)
             pts.append(pb)
-            # After reaching B, step sideways to the next lane start.
+
             if i < self.num_lanes - 1:
                 next_across = (i + 1) * self.lane_spacing
                 if self.primary_axis == "x":
@@ -222,7 +194,6 @@ class LawnMowerController(Node):
                 self.phase = "TURN"
                 return
             cmd.linear.x = self.linear_speed
-            # Small steering correction while driving.
             cmd.angular.z = max(-self.max_angular_speed,
                                 min(self.max_angular_speed, self.k_yaw * yaw_err))
 
@@ -246,7 +217,7 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
-        node.cmd_pub.publish(Twist())  # stop on exit
+        node.cmd_pub.publish(Twist())
         node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()

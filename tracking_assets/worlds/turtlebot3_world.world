@@ -63,16 +63,18 @@
       <uri>model://warehouse_world</uri>
     </include>
 
+
+<!-- СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ СТЭГ 
   <include>
     <name>turtlebot3_burger_apriltag_000</name>
     <uri>model://turtlebot3_burger_apriltag_000</uri>
-    <pose>4.0 9.0 0.01 0 0 0</pose>      ← было 1.5 9.0
+    <pose>4.0 9.0 0.01 0 0 0</pose>     
   </include>
 
   <include>
     <name>turtlebot3_burger_apriltag_001</name>
     <uri>model://turtlebot3_burger_apriltag_001</uri>
-    <pose>1.0 9.0 0.01 0 0 0</pose>      ← было -1.5 9.0
+    <pose>1.0 9.0 0.01 0 0 0</pose>      
   </include>
 
   <include>
@@ -96,6 +98,117 @@
     <name>turtlebot3_burger_apriltag_005</name>
     <uri>model://turtlebot3_burger_apriltag_005</uri>
     <pose>4 -9.0 0.01 0 0 0</pose>
+  </include> -->
+  
+    <!-- <include>
+    <name>turtlebot3_burger_stag_000</name>
+    <uri>model://turtlebot3_burger_stag_000</uri>
+    <pose>4.0 9.0 0.01 0 0 0</pose>
+  </include>
+  <include>
+    <name>turtlebot3_burger_stag_001</name>
+    <uri>model://turtlebot3_burger_stag_001</uri>
+    <pose>1.0 9.0 0.01 0 0 0</pose>
+  </include>
+  <include>
+    <name>turtlebot3_burger_stag_002</name>
+    <uri>model://turtlebot3_burger_stag_002</uri>
+    <pose>-4.25 9.0 0.01 0 0 0</pose>
+  </include>
+  <include>
+    <name>turtlebot3_burger_stag_003</name>
+    <uri>model://turtlebot3_burger_stag_003</uri>
+    <pose>-4.25 -9.0 0.01 0 0 0</pose>
+  </include>
+  <include>
+    <name>turtlebot3_burger_stag_004</name>
+    <uri>model://turtlebot3_burger_stag_004</uri>
+    <pose>1.0 -9.0 0.01 0 0 0</pose>
+  </include>
+  <include>
+    <name>turtlebot3_burger_stag_005</name>
+    <uri>model://turtlebot3_burger_stag_005</uri>
+    <pose>4 -9.0 0.01 0 0 0</pose>
+  </include> -->
+
+
+  <!-- АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ АПРИЛТЭГ  АПРИЛТЭГ  АПРИЛТЭГ  
+  <include>
+    <name>turtlebot3_burger_apriltag_board_001</name>
+    <uri>model://turtlebot3_burger_apriltag_board_001</uri>
+    <pose>1.0 9.0 0.01 0 0 0</pose>
+  </include>
+
+  <include>
+    <name>turtlebot3_burger_apriltag_board_002</name>
+    <uri>model://turtlebot3_burger_apriltag_board_002</uri>
+    <pose>-4.25 9.0 0.01 0 0 0</pose>
+  </include>
+
+  <include>
+    <name>turtlebot3_burger_apriltag_board_003</name>
+    <uri>model://turtlebot3_burger_apriltag_board_003</uri>
+    <pose>-4.25 -9.0 0.01 0 0 0</pose>
+  </include>
+
+  <include>
+    <name>turtlebot3_burger_apriltag_board_004</name>
+    <uri>model://turtlebot3_burger_apriltag_board_004</uri>
+    <pose>1.0 -9.0 0.01 0 0 0</pose>
+  </include>
+
+  <include>
+    <name>turtlebot3_burger_apriltag_board_005</name>
+    <uri>model://turtlebot3_burger_apriltag_board_005</uri>
+    <pose>4.0 -9.0 0.01 0 0 0</pose>
+  </include>
+  -->
+
+<!-- АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО АРУКО  -->
+<!-- 
+    <include>
+      <name>turtlebot3_burger_aruco_000</name>
+      <uri>model://turtlebot3_burger_aruco_000</uri>
+      <pose>4.0 9.0 0.01 0 0 -1.5708</pose>
+    </include>
+    <include>
+      <name>turtlebot3_burger_aruco_001</name>
+      <uri>model://turtlebot3_burger_aruco_001</uri>
+      <pose>1.0 9.0 0.01 0 0 -1.5708</pose>
+    </include>
+    <include>
+      <name>turtlebot3_burger_aruco_002</name>
+      <uri>model://turtlebot3_burger_aruco_002</uri>
+      <pose>-4.25 9.0 0.01 0 0 -1.5708</pose>
+    </include>
+    <include>
+      <name>turtlebot3_burger_aruco_003</name>
+      <uri>model://turtlebot3_burger_aruco_003</uri>
+      <pose>-4.25 -9.0 0.01 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>turtlebot3_burger_aruco_004</name>
+      <uri>model://turtlebot3_burger_aruco_004</uri>
+      <pose>1.0 -9.0 0.01 0 0 1.5708</pose>
+    </include>
+    <include>
+      <name>turtlebot3_burger_aruco_005</name>
+      <uri>model://turtlebot3_burger_aruco_005</uri>
+      <pose>4 -9.0 0.01 0 0 1.5708</pose>
+    </include> -->
+
+
+    <!-- <include>
+      <name>turtlebot3_burger_apriltag_board_001</name>
+      <uri>model://turtlebot3_burger_apriltag_board_001</uri>
+      <pose>0 0 0.01 0 0 0</pose>
+    </include>
+ -->
+
+  <include>
+    <name>turtlebot3_burger_default</name>
+    <uri>model://turtlebot3_burger</uri>
+    <pose>0 0 0.01 0 0 0</pose>
   </include>
 
   </world>
